@@ -34,7 +34,7 @@ void GoBackward(int duty){
 void GoLeft(int duty){
     
     digitalWrite(IN1,LOW);
-    digitalWrite(IN2,LOtW);
+    digitalWrite(IN2,LOW);
     digitalWrite(IN3,duty);
     digitalWrite(IN4,LOW);
 

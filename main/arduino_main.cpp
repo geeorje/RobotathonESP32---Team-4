@@ -101,7 +101,20 @@ void loop() {
                 
             }
             
+            else if(myController->axisX() < 5){
             
+                Stop();
+            
+                delay(250);
+            
+            }
+             else if(myController->axisY() < 5){
+            
+                Stop();
+            
+                delay(250);
+            
+            }
 
             dumpGamepad(myController); // Prints the gamepad state, delete or comment if don't need
         }
