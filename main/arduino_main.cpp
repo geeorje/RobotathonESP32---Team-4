@@ -52,3 +52,35 @@ void loop() {
         }
     }
 }
+
+// 10/20/2025 -> Color sensor workshop
+#define APDS9960_INT 0
+#define I2C_SDA 21
+#define I2C_SCL 19 //sample code uses 22, I use 19 because 22 was already taken -S.N.
+#define I2C_FREQ 100000
+
+//TwoWire I2C_0 = TwoWire(0);
+//APDS9960 sensor = APDS9960(I2C_0, APDS9960_INT);
+
+//void RGBsetup() {
+    //I2C_0.begin(I2C_SDA, I2C_SCL, I2C_FREQ);
+    //sensor.setInterruptPin(APDS9960_INT);
+    //sensor.begin();
+    //Serial.begin(115200);
+//}
+
+//void RGBloop() {
+    //while(!sensor.colorAvailable()) {
+        //delay(5);
+    //}
+
+//     int r, g, b, a;
+//     sensor.readColor(r, g, b, a);
+//     Serial.print("r = ");
+//     Serial.print(r);
+//     Serial.print(" g = ");
+//     Serial.print(g);
+//     Serial.print(" b = ");
+//     Serial.print(b);
+//     vTaskDelay(1);
+// }
