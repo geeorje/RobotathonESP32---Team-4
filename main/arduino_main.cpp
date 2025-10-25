@@ -12,7 +12,7 @@
 
 #define IN1  16  // Control pin 1
 #define IN2  17  // Control pin 2
-#define IN3  22 // Control pin 3
+#define IN3  19 // Control pin 3
 #define IN4  23 // Control pin 4
 
 
@@ -74,14 +74,14 @@ void loop() {
 
                 GoForward(255);
 
-                delay(250); // Run for .25 second
+                //delay(250); // Run for .25 second
                 
             } 
             else if(myController->axisY() > 200){       // go backward
                
                 GoBackward(255);
 
-                delay(250); // Run for .25 second
+                //delay(250); // Run for .25 second
                 
         
             }  
@@ -89,7 +89,7 @@ void loop() {
                 
                 GoLeft(255);
 
-                delay(250); // Run for .25 second
+                //delay(250); // Run for .25 second
                 
                 
             }
@@ -97,27 +97,20 @@ void loop() {
                 
                 GoRight(255);
 
-                delay(250); // Run for .25 second
+               // delay(250); // Run for .25 second
                 
             }
             
-            else if(myController->axisX() < 5){
+            else{
             
                 Stop();
             
-                delay(250);
+                //delay(250);
             
             }
-             else if(myController->axisY() < 5){
-            
-                Stop();
-            
-                delay(250);
-            
-            }
-
             dumpGamepad(myController); // Prints the gamepad state, delete or comment if don't need
         }
     }
     vTaskDelay(1); // Yield CPU to not starve other ESP32 processes and cause WDT reset
 }
+ 
