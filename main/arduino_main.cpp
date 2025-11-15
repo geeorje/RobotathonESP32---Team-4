@@ -100,28 +100,28 @@ void setup() {
     pinMode(IN3, OUTPUT);
     pinMode(IN4, OUTPUT);
 
-    //RGBsetup();
+    RGBsetup();
     
-    // I2C_0.begin(I2C_SDA, I2C_SCL, I2C_FREQ);
-    // sensor.setInterruptPin(APDS9960_INT);
-    // sensor.begin();
-    // Serial.begin(115200);
+    I2C_0.begin(I2C_SDA, I2C_SCL, I2C_FREQ);
+    sensor.setInterruptPin(APDS9960_INT);
+    sensor.begin();
+    Serial.begin(115200);
 
-    // Serial.begin(115200);
-    // IRSensorRight.setFilterRate(1.0f);
-    // IRSensorFront.setFilterRate(1.0f);
-    // IRSensorLeft.setFilterRate(1.0f);
+    Serial.begin(115200);
+    IRSensorRight.setFilterRate(1.0f);
+    IRSensorFront.setFilterRate(1.0f);
+    IRSensorLeft.setFilterRate(1.0f);
 
     // set up Serial Communication and sensor pins
-    // Serial.begin(115200);
-    // qtr.setTypeAnalog(); // or setTypeAnalog()
-    // qtr.setSensorPins((const uint8_t[]) {26, 27}, 2); // pin numbers go in the curly brackets {}, and number of sensors in use goes after
-    // // calibration sequence
-    // for (uint8_t i = 0; i < 250; i++) { 
-    //     Console.printf("calibrating %d/250\n", i); // 250 is the number of calibrations recommended by manufacturer
-    //     qtr.calibrate(); 
-    //     delay(20);
-    // }
+    Serial.begin(115200);
+    qtr.setTypeAnalog(); // or setTypeAnalog()
+    qtr.setSensorPins((const uint8_t[]) {26, 27}, 2); // pin numbers go in the curly brackets {}, and number of sensors in use goes after
+    // calibration sequence
+    for (uint8_t i = 0; i < 250; i++) { 
+        Console.printf("calibrating %d/250\n", i); // 250 is the number of calibrations recommended by manufacturer
+        qtr.calibrate(); 
+        delay(20);
+    }
 }
 
 
@@ -129,115 +129,121 @@ void loop() {
 
     vTaskDelay(1); // Ensures WDT does not get triggered when no controller is connected
 
-    // qtr.readLineBlack(sensors); // Get calibrated sensor values returned into sensors[]
-    // Console.printf("S1: %d S2: %d\n", sensors[0], sensors[1]);
-    // delay(250); // line sensor stuff
+    qtr.readLineBlack(sensors); // Get calibrated sensor values returned into sensors[]
+    Console.printf("S1: %d S2: %d\n", sensors[0], sensors[1]);
+    delay(250); // line sensor stuff
 
-    // myServo.write(1750); // Rotate to 0 degrees
-    //RGBloop();
+    myServo.write(1750); // Rotate to 0 degrees
+    RGBloop();
 
-    // Console.printf("Right sensor: %f \n",IRSensorRight.getDistanceFloat());
-    // Console.printf("Front sensor: %f \n",IRSensorFront.getDistanceFloat());
-    // Console.printf("Left sensor: %f \n",IRSensorLeft.getDistanceFloat());
+    Console.printf("Right sensor: %f \n",IRSensorRight.getDistanceFloat());
+    Console.printf("Front sensor: %f \n",IRSensorFront.getDistanceFloat());
+    Console.printf("Left sensor: %f \n",IRSensorLeft.getDistanceFloat());
 
-    if 
+    
+    
 
-    if (r > 40){
-        GoForward(255);
-        
-        delay(250);
-       
-        do {
-            GoForward(255);
-        } while (r <= 40);
-        Stop();
-    }
 
-    if (g > 40){
-        GoForward(255);
-        
-        delay(250);
-       
-        do {
-            GoForward(255);
-        } while (g <= 40);
-        Stop();
-    }
 
-    if (b > 40){
-        GoForward(255);
-        
-        delay(250);
-       
-        do {
-            GoForward(255);
-        } while (b <= 40);
-        Stop();
+    BP32.update(); 
+    for (auto myController : myControllers) { // Only execute code when controller is connected
+        if (myController && myController->isConnected() && myController->hasData()) {
+            
+            if (myController->x())  {
+                while(myController->b() == 0){
+                    if (IRSensorFront.getDistanceFloat() > 40 && IRSensorLeft.getDistanceFloat() > 40 && IRSensorRight.getDistanceFloat() > 40) 
+                    GoForward(255);
+
+                    else if (IRSensorLeft.getDistanceFloat() <40)
+                    GoRight(255);
+
+                    else if (IRSensorRight.getDistanceFloat() <40)
+                    GoLeft(255); 
+
+                    BP32.update(); }
     }
 
 
-    if (IRSensorFront.getDistanceFloat > 40 && IRSensorLeft.getDistanceFloat > 40 && IRSensorRight.getDistanceFloat > 40) {
-        GoForward(255);
+            if (myController->y())  {
+                while(myController->b() == 0) {
 
-        else if (IRSensorLeft.getDistanceFloat <40)
-        GoRight(255);
+                    if (r > 40){
+                        GoForward(255);
+                        
+                        delay(250);
+                    
+                    do {
+                        GoForward(255);
+                    } while (r <= 40);
+                    Stop();
+                }
 
-        else if (IRSensorRight.getDistanceFloat <40)
-        GoLeft(255);
+                    else if (g > 40){
+                        GoForward(255);
+                        
+                        delay(250);
+                    
+                    do {
+                        GoForward(255);
+                    } while (g <= 40);
+                    Stop();
+                }
+
+                    else if (b > 40){
+                        GoForward(255);
+                        
+                        delay(250);
+                    
+                    do {
+                        GoForward(255);
+                    } while (b <= 40);
+                    Stop();
+                }
+       BP32.update(); }   
+
+    }
         
-    //     {
-    //         /* code */
-    //     }
-        
-    // }
-
-
-
-
-    // BP32.update(); 
-    // for (auto myController : myControllers) { // Only execute code when controller is connected
-    //     if (myController && myController->isConnected() && myController->hasData()) {        
           
-    //         if(myController->axisY() < -200){           // go forward
+            if(myController->axisY() < -200){           // go forward
 
-    //             GoForward(255);
+                GoForward(255);
 
-    //             //delay(250); // Run for .25 second
+                //delay(250); // Run for .25 second
                 
-    //         } 
-    //         else if(myController->axisY() > 200){       // go backward
+            } 
+            else if(myController->axisY() > 200){       // go backward
                
-    //             GoBackward(255);
+                GoBackward(255);
 
-    //             //delay(250); // Run for .25 second
+                //delay(250); // Run for .25 second
                 
         
-    //         }  
-    //         else if(myController->axisX() < -200){      // turn left
+            }  
+            else if(myController->axisX() < -200){      // turn left
                 
-    //             GoLeft(255);
+                GoLeft(255);
 
-    //             //delay(250); // Run for .25 second
+                //delay(250); // Run for .25 second
                 
                 
-    //         }
-    //         else if(myController->axisX() > 200){       // turn right
+            }
+            else if(myController->axisX() > 200){       // turn right
                 
-    //             GoRight(255);
+                GoRight(255);
 
-    //            // delay(250); // Run for .25 second
+               // delay(250); // Run for .25 second
                 
-    //         }
+            }
             
-    //         else{
+            else{
             
-    //             Stop();
+                Stop();
             
-    //             //delay(250);
+                //delay(250);
             
-    //         }
-    //         dumpGamepad(myController); // Prints the gamepad state, delete or comment if don't need
-    //     }
-    // }
+            }
+            dumpGamepad(myController); // Prints the gamepad state, delete or comment if don't need
+        }
+    }
 }
  
